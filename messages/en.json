@@ -68,6 +68,10 @@
     "backHome": "Home"
   },
   "home": {
+    "meta": {
+      "title": "Helwan CS — Plan Your Graduation Path",
+      "description": "Plan every semester, track your GPA in real time, and get AI-powered course recommendations tailored to the Helwan University Computer Science curriculum."
+    },
     "badge": "Built for Helwan CS students",
     "heroTitle": "See your graduation path",
     "heroHighlight": "before you register.",

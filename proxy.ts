@@ -8,7 +8,7 @@ const PROTECTED = ["courses", "gpa", "ai-plan", "profile"]
 const DASHBOARD = ["dashboard"]
 const AUTH_ONLY = ["login", "register"]
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const token = request.cookies.get("token")?.value
 
