@@ -1,11 +1,14 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { useTranslations } from "next-intl"
 import { ChevronRight } from "lucide-react"
 import { SEMESTERS, semStyle } from "./data"
 import { EASE, inView } from "./animations"
 
 export function RoadmapSection() {
+  const t = useTranslations("home")
+
   return (
     <section id="roadmap" className="py-20">
       <div className="mx-auto max-w-6xl px-6">
@@ -17,15 +20,12 @@ export function RoadmapSection() {
           className="mb-12"
         >
           <p className="mb-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            Curriculum Roadmap
+            {t("metricsTitle")}
           </p>
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Your entire CS degree, mapped.
+            {t("mapTitle")}
           </h2>
-          <p className="mt-3 max-w-lg text-muted-foreground">
-            Every course, every prerequisite, every semester — visualized from year one
-            to graduation. Know exactly what comes next, and why.
-          </p>
+          <p className="mt-3 max-w-lg text-muted-foreground">{t("mapSubtitle")}</p>
         </motion.div>
 
         <div className="overflow-x-auto pb-4">
@@ -45,16 +45,24 @@ export function RoadmapSection() {
                   <div className={`rounded-t-xl border border-b-0 ${s.ring} bg-card p-4`}>
                     <div className="mb-1 flex items-center justify-between">
                       <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${s.badge}`}>
-                        {sem.status === "done" ? "Completed" : sem.status === "active" ? "In Progress" : "Upcoming"}
+                        {sem.status === "done"
+                          ? t("semCompleted")
+                          : sem.status === "active"
+                          ? t("semInProgress")
+                          : t("semUpcoming")}
                       </span>
                       {sem.gpa && (
                         <span className="font-mono text-xs font-semibold text-success">
-                          {sem.gpa} GPA
+                          GPA {sem.gpa}
                         </span>
                       )}
                     </div>
-                    <p className="text-sm font-semibold text-foreground">{sem.label}</p>
-                    <p className="text-xs text-muted-foreground">{sem.credits} credits</p>
+                    <p className="text-sm font-semibold text-foreground">
+                      {t("semLabel", { n: sem.num })}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {t("semCredits", { n: sem.credits })}
+                    </p>
                     <div className="mt-2 h-1 overflow-hidden rounded-full bg-muted">
                       <motion.div
                         initial={{ width: 0 }}
@@ -91,8 +99,8 @@ export function RoadmapSection() {
           viewport={{ once: true }}
           className="mt-4 flex items-center gap-2 text-xs text-muted-foreground"
         >
-          <ChevronRight className="size-3.5" />
-          <span>Semesters 5–8 continue with AI, distributed systems, and specialization tracks.</span>
+          <ChevronRight className="size-3.5 rtl:rotate-180" />
+          <span>{t("semesters56")}</span>
         </motion.div>
       </div>
     </section>

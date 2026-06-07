@@ -1,40 +1,43 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { useTranslations } from "next-intl"
 import { Calendar, BarChart3, Brain, ArrowUpRight } from "lucide-react"
 import { inView } from "../animations"
 import { PlannerPreview } from "./planner-preview"
 import { GpaPreview } from "./gpa-preview"
 import { AdvisorPreview } from "./advisor-preview"
 
-const cards = [
-  {
-    id: "planner",
-    icon: Calendar,
-    label: "Degree Planner",
-    title: "Map every semester from day one.",
-    desc: "Drag courses into semesters, see your credit count update live, and spot conflicts before they happen.",
-    preview: <PlannerPreview />,
-  },
-  {
-    id: "gpa",
-    icon: BarChart3,
-    label: "GPA Intelligence",
-    title: "Track trends, project your final GPA.",
-    desc: "Grade-level breakdowns, per-semester trends, and a projection engine that tells you exactly what you need to hit your target.",
-    preview: <GpaPreview />,
-  },
-  {
-    id: "advisor",
-    icon: Brain,
-    label: "AI Academic Advisor",
-    title: "Never miss a prerequisite again.",
-    desc: "An AI model trained on the Helwan CS curriculum surfaces blockers, suggests optimal course sequences, and keeps your path clear.",
-    preview: <AdvisorPreview />,
-  },
-]
-
 export function FeaturesSection() {
+  const t = useTranslations("home")
+
+  const cards = [
+    {
+      id: "planner",
+      icon: Calendar,
+      label: t("plannerTitle"),
+      title: t("plannerTitle"),
+      desc: t("plannerDesc"),
+      preview: <PlannerPreview />,
+    },
+    {
+      id: "gpa",
+      icon: BarChart3,
+      label: t("gpaTitle"),
+      title: t("gpaTitle"),
+      desc: t("gpaDesc"),
+      preview: <GpaPreview />,
+    },
+    {
+      id: "advisor",
+      icon: Brain,
+      label: t("advisorTitle"),
+      title: t("advisorTitle"),
+      desc: t("advisorDesc"),
+      preview: <AdvisorPreview />,
+    },
+  ]
+
   return (
     <section id="features" className="bg-muted/30 py-20">
       <div className="mx-auto max-w-6xl px-6">
@@ -45,15 +48,9 @@ export function FeaturesSection() {
           viewport={{ once: true }}
           className="mb-12"
         >
-          <p className="mb-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            Features
-          </p>
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Everything you need to graduate with confidence.
+            {t("featuresTitle")}
           </h2>
-          <p className="mt-3 max-w-lg text-muted-foreground">
-            Built around how CS students at Helwan actually plan, register, and succeed.
-          </p>
         </motion.div>
 
         <div className="grid gap-6 md:grid-cols-3">
@@ -77,9 +74,6 @@ export function FeaturesSection() {
                 </div>
                 <p className="text-sm font-semibold leading-snug text-foreground">{title}</p>
                 <p className="text-xs leading-relaxed text-muted-foreground">{desc}</p>
-                <button className="mt-auto flex items-center gap-1 text-xs font-medium text-primary">
-                  Learn more <ArrowUpRight className="size-3" />
-                </button>
               </div>
             </motion.div>
           ))}

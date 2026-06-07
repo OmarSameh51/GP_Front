@@ -1,13 +1,16 @@
 "use client"
 
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { motion } from "framer-motion"
-import { ArrowRight, CheckCircle2, TrendingUp, Brain, Sparkles } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { ArrowRight, CheckCircle2, TrendingUp, Brain } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
 import { DashboardMockup } from "./dashboard-mockup"
 import { EASE, fadeUp, stagger } from "./animations"
 
 export function HeroSection() {
+  const t = useTranslations("home")
+
   return (
     <section className="relative overflow-hidden">
       <div className="pointer-events-none absolute -top-32 left-1/2 -z-10 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-primary/6 blur-[120px]" />
@@ -18,8 +21,7 @@ export function HeroSection() {
           <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6">
             <motion.div variants={fadeUp} custom={0}>
               <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
-                {/* <Sparkles className="size-3 text-primary" /> */}
-                Built for Helwan CS students
+                {t("badge")}
               </span>
             </motion.div>
 
@@ -28,9 +30,9 @@ export function HeroSection() {
               custom={1}
               className="text-[2.75rem] font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl"
             >
-              See your graduation path{" "}
+              {t("heroTitle")}{" "}
               <span className="relative">
-                <span className="text-primary">before you register.</span>
+                <span className="text-primary">{t("heroHighlight")}</span>
                 <motion.span
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
@@ -46,25 +48,21 @@ export function HeroSection() {
               custom={2}
               className="max-w-md text-base leading-relaxed text-muted-foreground"
             >
-              Plan every semester, track your GPA in real time, and get AI-powered course
-              recommendations tailored to the Helwan Computer Science curriculum.
+              {t("heroSubtitle")}
             </motion.p>
 
             <motion.div variants={fadeUp} custom={3} className="flex flex-wrap gap-3">
               <Link href="/register" className={buttonVariants({ variant: "default", size: "lg" })}>
-                Start Planning Free
-                <ArrowRight className="ml-1 size-4" />
+                {t("startPlanning")}
+                <ArrowRight className="ms-1 size-4 rtl:rotate-180" />
               </Link>
               <Link href="/login" className={buttonVariants({ variant: "outline", size: "lg" })}>
-                Sign In
+                {t("signIn")}
               </Link>
             </motion.div>
 
             <motion.div variants={fadeUp} custom={4} className="flex items-center gap-4 pt-2">
-              {[
-                { text: "No signup required to explore" },
-                { text: "Helwan curriculum built-in" },
-              ].map(({ text }) => (
+              {[t("noSignup"), t("builtIn")].map((text) => (
                 <p key={text} className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <CheckCircle2 className="size-3.5 text-success" />
                   {text}
@@ -84,12 +82,12 @@ export function HeroSection() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1, duration: 0.5, ease: EASE }}
-              className="absolute -left-4 top-16 z-10 hidden items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 shadow-lg lg:flex"
+              className="absolute -start-4 top-16 z-10 hidden items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 shadow-lg lg:flex"
             >
               <TrendingUp className="size-4 text-success" />
               <div>
-                <p className="text-xs font-semibold text-foreground">GPA on track</p>
-                <p className="text-[10px] text-muted-foreground">3.42 → projected 3.55</p>
+                <p className="text-xs font-semibold text-foreground">{t("gpaBadge")}</p>
+                <p className="text-[10px] text-muted-foreground">{t("gpaProjected")}</p>
               </div>
             </motion.div>
 
@@ -97,12 +95,12 @@ export function HeroSection() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1.1, duration: 0.5, ease: EASE }}
-              className="absolute -right-4 bottom-20 z-10 hidden items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 shadow-lg lg:flex"
+              className="absolute -end-4 bottom-20 z-10 hidden items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 shadow-lg lg:flex"
             >
               <Brain className="size-4 text-primary" />
               <div>
-                <p className="text-xs font-semibold text-foreground">3 recommendations</p>
-                <p className="text-[10px] text-muted-foreground">from AI advisor</p>
+                <p className="text-xs font-semibold text-foreground">{t("aiBadge")}</p>
+                <p className="text-[10px] text-muted-foreground">{t("aiFrom")}</p>
               </div>
             </motion.div>
 

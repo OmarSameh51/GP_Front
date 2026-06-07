@@ -23,7 +23,7 @@ function LandingPage() {
 export function HomeContent() {
   const { user, isAuthenticated } = useAuthStore()
 
-  if (isAuthenticated && user) return <AuthenticatedHome user={user} />
+  if (isAuthenticated && user) return <AuthenticatedHome />
 
   return <LandingPage />
 }

@@ -1,33 +1,38 @@
-import { AlertCircle, TrendingUp, Zap, ChevronRight } from "lucide-react"
+"use client"
 
-const recs = [
-  {
-    icon: AlertCircle,
-    color: "text-warning",
-    bg: "bg-warning/10",
-    title: "Prerequisite Warning",
-    msg: "Enroll in OS (CS 303) before Distributed Systems opens for you next semester.",
-    action: "View path",
-  },
-  {
-    icon: TrendingUp,
-    color: "text-success",
-    bg: "bg-success/10",
-    title: "Dean's List Track",
-    msg: "Maintain a 3.5+ this semester and you qualify for the Dean's List.",
-    action: "See courses",
-  },
-  {
-    icon: Zap,
-    color: "text-primary",
-    bg: "bg-primary/10",
-    title: "Elective Suggestion",
-    msg: "You have 2 free elective slots — AI Fundamentals aligns with your track.",
-    action: "Explore",
-  },
-]
+import { AlertCircle, TrendingUp, Zap, ChevronRight } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 export function AdvisorPreview() {
+  const t = useTranslations("home")
+
+  const recs = [
+    {
+      icon: AlertCircle,
+      color: "text-warning",
+      bg: "bg-warning/10",
+      title: t("advisorRec1Title"),
+      msg: t("advisorRec1Msg"),
+      action: t("advisorRec1Action"),
+    },
+    {
+      icon: TrendingUp,
+      color: "text-success",
+      bg: "bg-success/10",
+      title: t("advisorRec2Title"),
+      msg: t("advisorRec2Msg"),
+      action: t("advisorRec2Action"),
+    },
+    {
+      icon: Zap,
+      color: "text-primary",
+      bg: "bg-primary/10",
+      title: t("advisorRec3Title"),
+      msg: t("advisorRec3Msg"),
+      action: t("advisorRec3Action"),
+    },
+  ]
+
   return (
     <div className="space-y-2 rounded-xl border border-border bg-background p-3">
       {recs.map(({ icon: Icon, color, bg, title, msg, action }) => (
@@ -40,7 +45,7 @@ export function AdvisorPreview() {
             </div>
           </div>
           <button className={`mt-2 flex items-center gap-0.5 text-[9px] font-medium ${color}`}>
-            {action} <ChevronRight className="size-2.5" />
+            {action} <ChevronRight className="size-2.5 rtl:rotate-180" />
           </button>
         </div>
       ))}

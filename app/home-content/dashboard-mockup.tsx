@@ -1,6 +1,18 @@
+"use client"
+
 import { Brain } from "lucide-react"
+import { useTranslations } from "next-intl"
 
 export function DashboardMockup() {
+  const t = useTranslations("home")
+
+  const courses = [
+    { name: "Algorithms", code: "CS 301", grade: "A", done: true },
+    { name: "Database Systems", code: "CS 304", grade: "B+", done: true },
+    { name: "OS", code: "CS 303", grade: "—", done: false },
+    { name: "Networks", code: "CS 305", grade: "—", done: false },
+  ]
+
   return (
     <div className="w-full overflow-hidden rounded-2xl border border-border bg-card shadow-[0_32px_80px_-12px_oklch(0_0_0/0.15)]">
       {/* chrome */}
@@ -8,21 +20,19 @@ export function DashboardMockup() {
         <span className="size-2.5 rounded-full bg-red-400/70" />
         <span className="size-2.5 rounded-full bg-yellow-400/70" />
         <span className="size-2.5 rounded-full bg-green-400/70" />
-        <span className="ml-3 font-mono text-[10px] text-muted-foreground">
-          helwancs.edu/dashboard
-        </span>
+        <span className="ms-3 font-mono text-[10px] text-muted-foreground">helwancs.edu/dashboard</span>
       </div>
 
       {/* top bar */}
       <div className="flex items-center justify-between border-b border-border px-4 py-3">
         <div>
           <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-            20211234 · Spring 2025
+            {t("mockupSemester")}
           </p>
           <p className="text-sm font-semibold text-foreground">Ahmed Hassan</p>
         </div>
         <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
-          Year 3
+          {t("mockupYear")}
         </span>
       </div>
 
@@ -30,17 +40,17 @@ export function DashboardMockup() {
         {/* stat cards */}
         <div className="grid grid-cols-3 gap-2">
           <div className="rounded-xl border border-border bg-background p-3">
-            <p className="mb-1 text-[10px] text-muted-foreground">Current GPA</p>
+            <p className="mb-1 text-[10px] text-muted-foreground">{t("mockupCurrentGpa")}</p>
             <p className="text-2xl font-bold tabular-nums text-foreground">3.42</p>
             <p className="mt-0.5 text-[10px] text-success">↑ +0.12</p>
           </div>
           <div className="rounded-xl border border-border bg-background p-3">
-            <p className="mb-1 text-[10px] text-muted-foreground">Credits</p>
+            <p className="mb-1 text-[10px] text-muted-foreground">{t("mockupCredits")}</p>
             <p className="text-2xl font-bold tabular-nums text-foreground">80</p>
-            <p className="mt-0.5 text-[10px] text-muted-foreground">of 132</p>
+            <p className="mt-0.5 text-[10px] text-muted-foreground">{t("mockupOf")}</p>
           </div>
           <div className="rounded-xl border border-border bg-background p-3">
-            <p className="mb-1 text-[10px] text-muted-foreground">Progress</p>
+            <p className="mb-1 text-[10px] text-muted-foreground">{t("mockupProgress")}</p>
             <p className="text-2xl font-bold tabular-nums text-foreground">61%</p>
             <div className="mt-1.5 h-1 rounded-full bg-muted">
               <div className="h-full w-[61%] rounded-full bg-primary" />
@@ -48,18 +58,13 @@ export function DashboardMockup() {
           </div>
         </div>
 
-        {/* course list */}
+        {/* course list — names/codes stay in English as academic identifiers */}
         <div className="rounded-xl border border-border bg-background p-3">
           <p className="mb-2 text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">
-            Current Semester
+            {t("mockupCurrentSem")}
           </p>
           <div className="space-y-1.5">
-            {[
-              { name: "Algorithms", code: "CS 301", grade: "A", done: true },
-              { name: "Database Systems", code: "CS 304", grade: "B+", done: true },
-              { name: "OS", code: "CS 303", grade: "—", done: false },
-              { name: "Networks", code: "CS 305", grade: "—", done: false },
-            ].map((c) => (
+            {courses.map((c) => (
               <div key={c.code} className="flex items-center justify-between">
                 <div className="flex min-w-0 items-center gap-2">
                   <span className={`size-1.5 shrink-0 rounded-full ${c.done ? "bg-success" : "bg-primary"}`} />
@@ -81,10 +86,9 @@ export function DashboardMockup() {
               <Brain className="size-3 text-primary" />
             </div>
             <div>
-              <p className="text-[10px] font-semibold text-foreground">AI Advisor</p>
+              <p className="text-[10px] font-semibold text-foreground">{t("mockupAiTitle")}</p>
               <p className="mt-0.5 text-[10px] leading-relaxed text-muted-foreground">
-                Complete <span className="font-medium text-primary">CS 303 (OS)</span> this
-                semester before registering for Distributed Systems — it&apos;s a hard prerequisite.
+                {t("mockupAiMsg")}
               </p>
             </div>
           </div>

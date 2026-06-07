@@ -1,54 +1,76 @@
 "use client"
 
+import { useEffect } from "react"
+import { useRouter } from "@/i18n/navigation"
 import { motion } from "framer-motion"
-import { Brain } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import type { User } from "@/store/auth"
-import { dashStats } from "./data"
+import { useTranslations } from "next-intl"
+import { useProfile } from "@/hooks/use-profile"
+import { useAuthStore } from "@/store/auth"
+import { PageSkeleton } from "@/components/page-skeleton"
+import { ErrorState } from "@/components/error-state"
+import { StatStrip } from "./dashboard/stat-strip"
+import { AIBanner } from "./dashboard/ai-banner"
+import { CourseSnapshot } from "./dashboard/course-snapshot"
+import { QuickLinks } from "./dashboard/quick-links"
 import { fadeUp, stagger } from "./animations"
 
-export function AuthenticatedHome({ user }: { user: User }) {
+export function AuthenticatedHome() {
+  const t = useTranslations("dashboard")
+  const router = useRouter()
+  const { data: profile, isLoading, isError, refetch } = useProfile()
+  const setRole = useAuthStore((s) => s.setRole)
+
+  useEffect(() => {
+    if (profile) {
+      setRole(profile.role)
+      if (profile.role === "admin" || profile.role === "super_admin") {
+        router.replace("/dashboard/students")
+      }
+    }
+  }, [profile, setRole, router])
+
+  if (isLoading) return <PageSkeleton />
+  if (isError || !profile)
+    return <ErrorState message="Could not load your profile." onRetry={refetch} />
+
+  const passed = profile.enrolledCourses.filter((c) => c.isPassed).length
+  const inProgress = profile.enrolledCourses.filter((c) => !c.isPassed).length
+  const planCount = profile.AI_plan?.plan?.length ?? 0
+
+  const stats = [
+    { value: profile.gpa != null ? profile.gpa.toFixed(2) : "—", label: t("gpa"), colorClass: "text-primary" },
+    { value: String(profile.totalCreditHours), label: t("creditsEarned"), colorClass: "text-success" },
+    { value: String(inProgress), label: t("inProgress"), colorClass: "text-info" },
+    { value: String(passed), label: t("passed"), colorClass: "text-muted-foreground" },
+  ]
+
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6">
         <motion.div variants={fadeUp}>
-          <p className="mb-1 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            {user.studentId}
+          <p className="text-muted-foreground mb-1 font-mono text-xs uppercase tracking-widest">
+            {profile.studentId}
           </p>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground">
-            {user.firstName} {user.lastName}
+          <h1 className="text-foreground text-4xl font-bold tracking-tight">
+            {profile.firstName} {profile.lastName}
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">{user.email}</p>
+          <p className="text-muted-foreground mt-1 text-sm">{profile.email}</p>
         </motion.div>
 
-        <motion.div
-          variants={fadeUp}
-          className="grid grid-cols-2 divide-x divide-y overflow-hidden rounded-xl border border-border bg-card sm:grid-cols-4 sm:divide-y-0"
-        >
-          {dashStats.map(({ value, label, colorClass }) => (
-            <div key={label} className="px-6 py-5">
-              <p className={`font-mono text-5xl font-bold tabular-nums ${colorClass}`}>{value}</p>
-              <p className="mt-2 text-xs uppercase tracking-wider text-muted-foreground">{label}</p>
-            </div>
-          ))}
+        <motion.div variants={fadeUp}>
+          <StatStrip stats={stats} />
         </motion.div>
 
-        <motion.div
-          variants={fadeUp}
-          className="rounded-lg border border-l-2 border-border border-l-accent bg-card p-5"
-        >
-          <div className="flex items-start gap-4">
-            <Brain className="mt-0.5 size-5 shrink-0 text-accent" />
-            <div className="flex-1">
-              <p className="font-medium text-foreground">Course recommendations available</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Based on your academic path, we have suggestions for next semester.
-              </p>
-            </div>
-            <Button variant="outline" size="sm" className="shrink-0">
-              View
-            </Button>
-          </div>
+        <motion.div variants={fadeUp}>
+          <AIBanner planCount={planCount} />
+        </motion.div>
+
+        <motion.div variants={fadeUp}>
+          <QuickLinks />
+        </motion.div>
+
+        <motion.div variants={fadeUp}>
+          <CourseSnapshot courses={profile.enrolledCourses} />
         </motion.div>
       </motion.div>
     </main>
