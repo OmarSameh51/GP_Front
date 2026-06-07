@@ -1,6 +1,6 @@
 "use client"
 
-import Link from "next/link"
+import { Link } from "@/i18n/navigation"
 import { motion } from "framer-motion"
 import { ArrowLeft, GraduationCap } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"

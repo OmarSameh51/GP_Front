@@ -1,36 +1,6 @@
-import { Geist_Mono, Inter } from "next/font/google"
-
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Providers } from "@/components/providers"
-import { TooltipProvider } from "@/components/ui/tooltip"
-import { cn } from "@/lib/utils"
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'})
-
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-})
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
-  return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
-    >
-      <body suppressHydrationWarning>
-        <Providers>
-          <ThemeProvider>
-            <TooltipProvider>{children}</TooltipProvider>
-          </ThemeProvider>
-        </Providers>
-      </body>
-    </html>
-  )
+// Minimal root layout — app/[locale]/layout.tsx owns <html> and <body>
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return children as React.ReactElement
 }
