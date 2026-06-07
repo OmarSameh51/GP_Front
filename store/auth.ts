@@ -1,19 +1,23 @@
 import Cookies from "js-cookie"
 import { create } from "zustand"
 import { persist, createJSONStorage } from "zustand/middleware"
+import type { Role } from "@/types/api"
 
 export type User = {
   id: string
-  studentId: string
+  studentId?: string
   email: string
   firstName: string
   lastName: string
+  role?: Role
+  username?: string
 }
 
 type AuthState = {
   user: User | null
   isAuthenticated: boolean
   setAuth: (user: User, token: string) => void
+  setRole: (role: Role) => void
   clearAuth: () => void
 }
 
@@ -32,6 +36,12 @@ export const useAuthStore = create<AuthState>()(
       setAuth: (user, token) => {
         Cookies.set("token", token, { expires: 7 })
         set({ user, isAuthenticated: true })
+      },
+
+      setRole: (role) => {
+        set((state) => ({
+          user: state.user ? { ...state.user, role } : null,
+        }))
       },
 
       clearAuth: () => {
