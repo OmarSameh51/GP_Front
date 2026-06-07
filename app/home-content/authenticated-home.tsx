@@ -33,8 +33,13 @@ export function AuthenticatedHome() {
   if (isError || !profile)
     return <ErrorState message="Could not load your profile." onRetry={refetch} />
 
-  const passed = profile.enrolledCourses.filter((c) => c.isPassed).length
-  const inProgress = profile.enrolledCourses.filter((c) => !c.isPassed).length
+  if (profile.role === "admin" || profile.role === "super_admin") {
+    return <PageSkeleton />
+  }
+
+  const enrolledCourses = profile.enrolledCourses ?? []
+  const passed = enrolledCourses.filter((c) => c.isPassed).length
+  const inProgress = enrolledCourses.filter((c) => !c.isPassed).length
   const planCount = profile.AI_plan?.plan?.length ?? 0
 
   const stats = [
@@ -70,7 +75,7 @@ export function AuthenticatedHome() {
         </motion.div>
 
         <motion.div variants={fadeUp}>
-          <CourseSnapshot courses={profile.enrolledCourses} />
+          <CourseSnapshot courses={enrolledCourses} />
         </motion.div>
       </motion.div>
     </main>

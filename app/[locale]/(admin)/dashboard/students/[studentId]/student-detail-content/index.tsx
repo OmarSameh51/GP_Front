@@ -29,8 +29,9 @@ export function StudentDetailContent({ studentId }: { studentId: string }) {
     })
   }
 
-  const passed = student.enrolledCourses.filter((c) => c.isPassed).length
-  const inProgress = student.enrolledCourses.filter((c) => !c.isPassed).length
+  const enrolledCourses = student.enrolledCourses ?? []
+  const passed = enrolledCourses.filter((c) => c.isPassed).length
+  const inProgress = enrolledCourses.filter((c) => !c.isPassed).length
 
   const stats = [
     { value: student.gpa?.toFixed(2) ?? "—", label: td("gpa"), colorClass: "text-primary" },
@@ -76,7 +77,7 @@ export function StudentDetailContent({ studentId }: { studentId: string }) {
       </div>
 
       <StudentProfileHeader student={student} />
-      <CoursesSection courses={student.enrolledCourses} />
+      <CoursesSection courses={enrolledCourses} />
       <AIPlanSection aiPlan={student.AI_plan} />
     </div>
   )

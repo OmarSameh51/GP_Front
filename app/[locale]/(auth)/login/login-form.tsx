@@ -59,7 +59,8 @@ export function LoginForm() {
     try {
       const { data } = await api.post("/auth/login", values)
       setAuth(data.user, data.token)
-      router.push("/")
+      const role = data.user.role
+      router.push(role === "admin" || role === "super_admin" ? "/dashboard/students" : "/")
     } catch (err) {
       setServerError((err as { response?: { data?: { msg?: string } } })?.response?.data?.msg ?? tCommon("somethingWentWrong"))
     } finally {
