@@ -48,7 +48,7 @@
       "confirmPasswordPlaceholder": "Re-enter password",
       "optionalDetails": "Optional details",
       "department": "Department",
-      "departmentPlaceholder": "e.g. CS",
+      "departmentPlaceholder": "Select department",
       "academicYear": "Year",
       "academicYearPlaceholder": "1–4",
       "submit": "Create Account",

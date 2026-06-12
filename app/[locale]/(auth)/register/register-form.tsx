@@ -20,6 +20,8 @@ type FormValues = {
   department: string; academicYear: string
 }
 
+const DEPARTMENTS = ["General", "AI", "CS", "IT", "IS"] as const
+
 export function RegisterForm() {
   const t = useTranslations("auth.register")
   const tCommon = useTranslations("common")
@@ -128,7 +130,18 @@ export function RegisterForm() {
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <Label htmlFor="department">{t("department")}</Label>
-              <Input id="department" placeholder={t("departmentPlaceholder")} className="h-10" {...field("department")} />
+              <select
+                id="department"
+                value={values.department}
+                onChange={(e) => setValues((v) => ({ ...v, department: e.target.value }))}
+                aria-invalid={!!errors.department}
+                className="h-10 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:bg-input/30"
+              >
+                <option value="">{t("departmentPlaceholder")}</option>
+                {DEPARTMENTS.map((d) => (
+                  <option key={d} value={d}>{d}</option>
+                ))}
+              </select>
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="academicYear">{t("academicYear")}</Label>
