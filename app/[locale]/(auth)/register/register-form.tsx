@@ -67,7 +67,7 @@ export function RegisterForm() {
         ...(values.department && { department: values.department }),
         ...(values.academicYear && { academicYear: Number(values.academicYear) }),
       })
-      router.push("/login?registered=true")
+      router.push(`/verify-email?email=${encodeURIComponent(values.email)}`)
     } catch (err) {
       setServerError((err as { response?: { data?: { msg?: string } } })?.response?.data?.msg ?? tCommon("somethingWentWrong"))
     } finally {

@@ -5,6 +5,8 @@ import { useProfile } from "@/hooks/use-profile"
 import { PageSkeleton } from "@/components/page-skeleton"
 import { ErrorState } from "@/components/error-state"
 import { GpaHeader } from "./gpa-header"
+import { GpaForecastCard } from "./gpa-forecast-card"
+import { GradePredictorCard } from "./grade-predictor-card"
 import { GradeBar } from "./grade-bar"
 import { GradeTable } from "./grade-table"
 
@@ -38,6 +40,10 @@ export function GPAContent() {
         passedCount={passed.length}
         failedCount={failed.length}
       />
+
+      {courses.length >= 2 && <GpaForecastCard />}
+
+      <GradePredictorCard />
 
       {courses.length > 0 && <GradeBar courses={courses} />}
 

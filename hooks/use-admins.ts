@@ -5,7 +5,10 @@ import type { AdminUser } from "@/types/api"
 export function useAdmins() {
   return useQuery({
     queryKey: ["super-admin", "admins"],
-    queryFn: () => api.get<AdminUser[]>("/super-admin/admins").then((r) => r.data),
+    queryFn: () =>
+      api
+        .get<{ count: number; admins: AdminUser[] }>("/super-admin/admins")
+        .then((r) => r.data.admins),
     staleTime: 30 * 1000,
   })
 }
