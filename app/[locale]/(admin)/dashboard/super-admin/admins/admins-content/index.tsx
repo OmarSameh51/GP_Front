@@ -53,7 +53,9 @@ function AdminsTable() {
               {admins.map((admin) => {
                 const isSelf = admin.username === currentUsername
                 const isSuperAdmin = admin.role === "super_admin"
-                const canDelete = !isSelf && !isSuperAdmin
+                // The backend rejects editing/deleting yourself or any super admin,
+                // so only surface the actions when they can actually succeed.
+                const canManage = !isSelf && !isSuperAdmin
 
                 return (
                   <tr key={admin._id} className="bg-card hover:bg-muted/30 transition-colors">
@@ -80,8 +82,8 @@ function AdminsTable() {
                     </td>
                     <td className="px-5 py-4 text-end">
                       <div className="flex items-center justify-end gap-1">
-                        <EditAdminDialog admin={admin} />
-                        {canDelete && (
+                        {canManage && <EditAdminDialog admin={admin} />}
+                        {canManage && (
                           <ConfirmDeleteDialog
                             trigger={<Trash2 className="size-4" />}
                             title={t("deleteAdminTitle")}

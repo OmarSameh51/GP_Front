@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { GraduationCap, LogOut, User, BookOpen, TrendingUp, Brain, LayoutDashboard, Menu } from "lucide-react"
+import { GraduationCap, LogOut, User, BookOpen, TrendingUp, Brain, FileText, LayoutDashboard, Menu } from "lucide-react"
 import { Link, useRouter } from "@/i18n/navigation"
 import { useTranslations } from "next-intl"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -129,6 +129,10 @@ export function Navbar() {
             >
               <Brain className="size-4" />
               {t("aiPlan")}
+            </Link>
+            <Link href="/summaries" className={buttonVariants({ variant: "ghost", size: "sm" })}>
+              <FileText className="size-4" />
+              {t("summaries")}
             </Link>
           </nav>
         )}

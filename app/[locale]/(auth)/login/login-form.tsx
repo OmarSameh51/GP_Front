@@ -24,6 +24,7 @@ export function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const registered = searchParams.get("registered") === "true"
+  const verified = searchParams.get("verified") === "true"
   const setAuth = useAuthStore((s) => s.setAuth)
 
   const [values, setValues] = useState<FormValues>({ email: "", password: "" })
@@ -62,7 +63,12 @@ export function LoginForm() {
       const role = data.user.role
       router.push(role === "admin" || role === "super_admin" ? "/dashboard/students" : "/")
     } catch (err) {
-      setServerError((err as { response?: { data?: { msg?: string } } })?.response?.data?.msg ?? tCommon("somethingWentWrong"))
+      const response = (err as { response?: { status?: number; data?: { msg?: string; isEmailVerified?: boolean } } })?.response
+      if (response?.status === 403 && response.data?.isEmailVerified === false) {
+        router.push(`/verify-email?email=${encodeURIComponent(values.email)}`)
+        return
+      }
+      setServerError(response?.data?.msg ?? tCommon("somethingWentWrong"))
     } finally {
       setIsSubmitting(false)
     }
@@ -75,10 +81,10 @@ export function LoginForm() {
         <p className="mt-1 text-sm text-muted-foreground">{t("subtitle")}</p>
       </motion.div>
 
-      {registered && (
+      {(registered || verified) && (
         <motion.div variants={fadeUp} custom={0.5} className="mb-6 flex items-center gap-2 rounded-xl border border-success/20 bg-success/10 p-3 text-sm">
           <CheckCircle className="size-4 shrink-0 text-success" />
-          <span className="text-success">{t("registered")}</span>
+          <span className="text-success">{t(verified ? "verified" : "registered")}</span>
         </motion.div>
       )}
 

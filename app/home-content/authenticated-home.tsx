@@ -39,13 +39,13 @@ export function AuthenticatedHome() {
 
   const enrolledCourses = profile.enrolledCourses ?? []
   const passed = enrolledCourses.filter((c) => c.isPassed).length
-  const inProgress = enrolledCourses.filter((c) => !c.isPassed).length
+  const failed = enrolledCourses.filter((c) => !c.isPassed).length
   const planCount = profile.AI_plan?.plan?.length ?? 0
 
   const stats = [
     { value: profile.gpa != null ? profile.gpa.toFixed(2) : "—", label: t("gpa"), colorClass: "text-primary" },
     { value: String(profile.totalCreditHours), label: t("creditsEarned"), colorClass: "text-success" },
-    { value: String(inProgress), label: t("inProgress"), colorClass: "text-info" },
+    { value: String(failed), label: t("failed"), colorClass: "text-destructive" },
     { value: String(passed), label: t("passed"), colorClass: "text-muted-foreground" },
   ]
 

@@ -17,6 +17,8 @@ export function CoursesContent() {
     return <ErrorState message={t("noCourses")} onRetry={refetch} />
 
   const courses = profile.enrolledCourses
+  // Only block re-adding courses already passed; failed courses can be retaken.
+  const excludeCodes = courses.filter((c) => c.isPassed).map((c) => c.courseCode)
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-10 space-y-6">
@@ -30,7 +32,7 @@ export function CoursesContent() {
             {t("subtitle", { count: courses.length, plural: courses.length !== 1 ? "s" : "" })}
           </p>
         </div>
-        <AddCourseDialog />
+        <AddCourseDialog excludeCodes={excludeCodes} />
       </div>
 
       {courses.length === 0 ? (
@@ -42,7 +44,7 @@ export function CoursesContent() {
             <p className="text-foreground font-medium">{t("noCourses")}</p>
             <p className="text-muted-foreground text-sm">{t("noCoursesDesc")}</p>
           </div>
-          <AddCourseDialog />
+          <AddCourseDialog excludeCodes={excludeCodes} />
         </div>
       ) : (
         <CourseTable courses={courses} />
