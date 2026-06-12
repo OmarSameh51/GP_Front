@@ -38,9 +38,9 @@ export function StudentsContent() {
   if (isError) return <ErrorState onRetry={refetch} />
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div>
-        <h1 className="text-foreground text-3xl font-bold tracking-tight">{t("students")}</h1>
+        <h1 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">{t("students")}</h1>
         <p className="text-muted-foreground mt-1 text-sm">
           {t("studentsTotal", { count: data?.count ?? 0, plural: (data?.count ?? 0) !== 1 ? "s" : "" })}
         </p>
@@ -62,7 +62,8 @@ export function StudentsContent() {
             <p className="text-muted-foreground text-sm">{t("noStudents")}</p>
           </div>
         ) : (
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full min-w-[760px] text-sm">
             <thead className="border-border border-b">
               <tr className="text-muted-foreground text-xs uppercase tracking-widest">
                 <th className="px-5 py-3 text-start font-mono font-normal">{t("colStudentId")}</th>
@@ -81,6 +82,7 @@ export function StudentsContent() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

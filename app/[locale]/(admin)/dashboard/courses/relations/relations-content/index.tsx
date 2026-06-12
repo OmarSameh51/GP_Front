@@ -26,9 +26,9 @@ export function RelationsContent() {
   if (coursesLoading) return <PageSkeleton />
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="space-y-6 p-4 sm:p-6 lg:p-8">
       <div>
-        <h1 className="text-foreground text-3xl font-bold tracking-tight">{t("relationsTitle")}</h1>
+        <h1 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">{t("relationsTitle")}</h1>
         <p className="text-muted-foreground mt-1 text-sm">{t("relationsSubtitle")}</p>
       </div>
 

@@ -24,7 +24,8 @@ export function CoursesSection({ courses }: { courses: EnrolledCourse[] }) {
           {t("coursesSection", { count: courses.length })}
         </p>
       </div>
-      <table className="w-full text-sm">
+      <div className="overflow-x-auto">
+      <table className="w-full min-w-[560px] text-sm">
         <thead className="border-border border-b">
           <tr className="text-muted-foreground text-xs uppercase tracking-widest">
             <th className="px-5 py-3 text-start font-mono font-normal">{tc("colCode")}</th>
@@ -54,6 +55,7 @@ export function CoursesSection({ courses }: { courses: EnrolledCourse[] }) {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   )
 }

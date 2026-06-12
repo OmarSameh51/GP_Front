@@ -30,10 +30,10 @@ export function AdminCoursesContent() {
   if (isError) return <ErrorState onRetry={refetch} />
 
   return (
-    <div className="p-8 space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 p-4 sm:p-6 lg:p-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-foreground text-3xl font-bold tracking-tight">{t("courses")}</h1>
+          <h1 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">{t("courses")}</h1>
           <p className="text-muted-foreground mt-1 text-sm">
             {t("coursesTotal", { count: courses?.length ?? 0, plural: (courses?.length ?? 0) !== 1 ? "s" : "" })}
           </p>
@@ -49,7 +49,8 @@ export function AdminCoursesContent() {
             <p className="text-muted-foreground text-sm">{t("noCourses")}</p>
           </div>
         ) : (
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full min-w-[760px] text-sm">
             <thead className="border-border border-b">
               <tr className="text-muted-foreground text-xs uppercase tracking-widest">
                 <th className="px-5 py-3 text-start font-mono font-normal">{t("colCode")}</th>
@@ -81,6 +82,7 @@ export function AdminCoursesContent() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>

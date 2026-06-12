@@ -41,8 +41,8 @@ export function StudentDetailContent({ studentId }: { studentId: string }) {
   ]
 
   return (
-    <div className="p-8 space-y-6">
-      <div className="flex items-start justify-between">
+    <div className="space-y-6 p-4 sm:p-6 lg:p-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <button
             onClick={() => router.push("/dashboard/students")}
@@ -51,7 +51,7 @@ export function StudentDetailContent({ studentId }: { studentId: string }) {
             <ArrowLeft className="size-3 rtl:rotate-180" />
             {t("backToStudents")}
           </button>
-          <h1 className="text-foreground text-3xl font-bold tracking-tight">{t("studentDetail")}</h1>
+          <h1 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">{t("studentDetail")}</h1>
         </div>
         <ConfirmDeleteDialog
           trigger={
@@ -69,8 +69,8 @@ export function StudentDetailContent({ studentId }: { studentId: string }) {
 
       <div className="border-border bg-card grid grid-cols-2 divide-x divide-y overflow-hidden rounded-xl border sm:grid-cols-4 sm:divide-y-0">
         {stats.map(({ value, label, colorClass }) => (
-          <div key={label} className="px-6 py-5">
-            <p className={`font-mono text-5xl font-bold tabular-nums ${colorClass}`}>{value}</p>
+          <div key={label} className="px-4 py-4 sm:px-6 sm:py-5">
+            <p className={`font-mono text-4xl font-bold tabular-nums sm:text-5xl ${colorClass}`}>{value}</p>
             <p className="text-muted-foreground mt-2 text-xs uppercase tracking-wider">{label}</p>
           </div>
         ))}

@@ -103,7 +103,7 @@
     "noSignup": "No signup required to explore",
     "builtIn": "Helwan curriculum built-in",
     "gpaBadge": "GPA on track",
-    "gpaProjected": "3.42 → projected 3.55",
+    "gpaProjected": "Projected",
     "aiBadge": "3 recommendations",
     "aiFrom": "from AI advisor",
     "metricsTitle": "Curriculum Roadmap",
@@ -126,7 +126,6 @@
     "advisorRec3Msg": "You have 2 free elective slots — AI Fundamentals aligns with your track.",
     "advisorRec3Action": "Explore",
     "gpaCumulative": "Cumulative GPA",
-    "gpaProjected": "Projected",
     "gpaBestSem": "Best semester",
     "gpaCurrent": "Current",
     "gpaTarget": "Target",
@@ -419,7 +418,9 @@
     "noCoursesSection": "No courses on record.",
     "coursesSection": "Courses ({count})",
     "aiPlanSection": "AI Plan",
-    "noAiPlan": "No AI plan generated."
+    "noAiPlan": "No AI plan generated.",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "common": {
     "loading": "Loading…",
