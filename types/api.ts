@@ -154,3 +154,29 @@ export type AdminUser = {
   phoneNumber?: string
   createdAt: string
 }
+
+export type AnnouncementType =
+  | "COURSE_CREATED"
+  | "COURSE_UPDATED"
+  | "COURSE_ACTIVATED"
+  | "COURSE_DEACTIVATED"
+  | "PREREQUISITE_ADDED"
+  | "PREREQUISITE_REMOVED"
+
+export type Announcement = {
+  id: string
+  type: AnnouncementType
+  courseCode: string
+  summary: string
+  details: Record<string, unknown>
+  adminId: string | null
+  adminUsername: string | null
+  createdAt: string
+}
+
+export type AnnouncementsResponse = {
+  count: number
+  offset: number
+  limit: number
+  announcements: Announcement[]
+}

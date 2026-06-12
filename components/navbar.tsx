@@ -13,6 +13,7 @@ import {
   LayoutDashboard,
   Menu,
   Compass,
+  Megaphone,
 } from "lucide-react"
 import { Link, useRouter } from "@/i18n/navigation"
 import { useTranslations } from "next-intl"
@@ -58,6 +59,14 @@ export function Navbar() {
 
   const isAdmin = user?.role === "admin" || user?.role === "super_admin"
 
+  const studentLinks = [
+    { href: "/courses", icon: BookOpen, label: t("courses"), accent: false },
+    { href: "/gpa", icon: TrendingUp, label: t("gpa"), accent: false },
+    { href: "/ai-plan", icon: Brain, label: t("aiPlan"), accent: true },
+    { href: "/summaries", icon: FileText, label: t("summaries"), accent: false },
+    { href: "/updates", icon: Megaphone, label: t("updates"), accent: false },
+  ] as const
+
   const userDropdown = (
     <DropdownMenu>
       <DropdownMenuTrigger className={buttonVariants({ variant: "ghost" })}>
@@ -82,6 +91,25 @@ export function Navbar() {
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
+
+        {/* Mobile-only student nav links (desktop shows them in the top bar) */}
+        {!isAdmin && (
+          <>
+            <DropdownMenuGroup className="md:hidden">
+              {studentLinks.map(({ href, icon: Icon, label, accent }) => (
+                <DropdownMenuItem
+                  key={href}
+                  onClick={() => router.push(href)}
+                  className="cursor-pointer"
+                >
+                  <Icon className={`size-4 ${accent ? "text-accent" : ""}`} />
+                  {label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator className="md:hidden" />
+          </>
+        )}
 
         <DropdownMenuGroup>
           {isAdmin ? (
@@ -115,6 +143,13 @@ export function Navbar() {
             {t("signOut")}
           </DropdownMenuItem>
         </DropdownMenuGroup>
+
+        {/* Mobile-only language + theme (desktop shows them in the top bar) */}
+        <DropdownMenuSeparator className="md:hidden" />
+        <div className="flex items-center justify-between px-2 py-1 md:hidden">
+          <LocaleSwitcher />
+          <ThemeToggle />
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   )
@@ -134,34 +169,16 @@ export function Navbar() {
         {/* Desktop student nav links */}
         {isAuthenticated && user && !isAdmin && (
           <nav className="hidden items-center gap-1 md:flex">
-            <Link
-              href="/courses"
-              className={buttonVariants({ variant: "ghost", size: "sm" })}
-            >
-              <BookOpen className="size-4" />
-              {t("courses")}
-            </Link>
-            <Link
-              href="/gpa"
-              className={buttonVariants({ variant: "ghost", size: "sm" })}
-            >
-              <TrendingUp className="size-4" />
-              {t("gpa")}
-            </Link>
-            <Link
-              href="/ai-plan"
-              className={`${buttonVariants({ variant: "ghost", size: "sm" })} text-accent`}
-            >
-              <Brain className="size-4" />
-              {t("aiPlan")}
-            </Link>
-            <Link
-              href="/summaries"
-              className={buttonVariants({ variant: "ghost", size: "sm" })}
-            >
-              <FileText className="size-4" />
-              {t("summaries")}
-            </Link>
+            {studentLinks.map(({ href, icon: Icon, label, accent }) => (
+              <Link
+                key={href}
+                href={href}
+                className={`${buttonVariants({ variant: "ghost", size: "sm" })} ${accent ? "text-accent" : ""}`}
+              >
+                <Icon className="size-4" />
+                {label}
+              </Link>
+            ))}
           </nav>
         )}
 

@@ -11,7 +11,8 @@
     "signOut": "Sign Out",
     "adminDashboard": "Admin Dashboard",
     "menu": "Menu",
-    "advise": "Guest Advisor"
+    "advise": "Guest Advisor",
+    "updates": "Updates"
   },
   "auth": {
     "login": {
@@ -451,5 +452,22 @@
     "title": "Page not found.",
     "subtitle": "The page you're looking for doesn't exist or has been moved.",
     "goHome": "Go home"
+  },
+  "updates": {
+    "title": "Course Updates",
+    "subtitle": "Changes admins have made to courses and prerequisites, newest first.",
+    "emptyTitle": "No updates yet",
+    "emptyDesc": "When admins add, edit, or change courses and prerequisites, the changes will show up here.",
+    "loadMore": "Load more",
+    "loading": "Loading…",
+    "byAdminAt": "{admin} · {when}",
+    "type": {
+      "COURSE_CREATED": "Course created",
+      "COURSE_UPDATED": "Course updated",
+      "COURSE_ACTIVATED": "Course activated",
+      "COURSE_DEACTIVATED": "Course deactivated",
+      "PREREQUISITE_ADDED": "Prerequisite added",
+      "PREREQUISITE_REMOVED": "Prerequisite removed"
+    }
   }
 }
