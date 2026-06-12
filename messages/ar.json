@@ -10,7 +10,8 @@
     "register": "إنشاء حساب",
     "signOut": "تسجيل الخروج",
     "adminDashboard": "لوحة التحكم",
-    "menu": "القائمة"
+    "menu": "القائمة",
+    "advise": "مستشار الزائر"
   },
   "auth": {
     "login": {

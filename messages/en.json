@@ -10,7 +10,8 @@
     "register": "Register",
     "signOut": "Sign Out",
     "adminDashboard": "Admin Dashboard",
-    "menu": "Menu"
+    "menu": "Menu",
+    "advise": "Guest Advisor"
   },
   "auth": {
     "login": {
