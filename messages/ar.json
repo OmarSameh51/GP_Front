@@ -103,7 +103,7 @@
     "noSignup": "لا يلزم التسجيل للاستكشاف",
     "builtIn": "منهج حلوان مدمج",
     "gpaBadge": "المعدل في مساره الصحيح",
-    "gpaProjected": "3.42 → متوقع 3.55",
+    "gpaProjected": "متوقع",
     "aiBadge": "3 توصيات",
     "aiFrom": "من المستشار الذكي",
     "metricsTitle": "خريطة المنهج الدراسي",
@@ -126,7 +126,6 @@
     "advisorRec3Msg": "لديك فرصتان للمقررات الاختيارية — أساسيات الذكاء الاصطناعي يتوافق مع مسارك.",
     "advisorRec3Action": "استكشف",
     "gpaCumulative": "المعدل التراكمي",
-    "gpaProjected": "متوقع",
     "gpaBestSem": "أفضل فصل",
     "gpaCurrent": "الحالي",
     "gpaTarget": "الهدف",
@@ -419,7 +418,9 @@
     "noCoursesSection": "لا توجد مقررات على السجل.",
     "coursesSection": "المقررات ({count})",
     "aiPlanSection": "خطة الذكاء الاصطناعي",
-    "noAiPlan": "لم يتم إنشاء خطة ذكاء اصطناعي."
+    "noAiPlan": "لم يتم إنشاء خطة ذكاء اصطناعي.",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة"
   },
   "common": {
     "loading": "جاري التحميل…",
