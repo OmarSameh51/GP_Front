@@ -17,22 +17,26 @@ const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } }
 type FormValues = {
   firstName: string; lastName: string; email: string
   password: string; confirmPassword: string
-  department: string; academicYear: string
+  department: string; academicYear: string; preferredDepartment: string
 }
 
-const DEPARTMENTS = ["General", "AI", "CS", "IT", "IS"] as const
+const SPECIALIZATIONS = ["AI", "CS", "IT", "IS"] as const
 
 export function RegisterForm() {
   const t = useTranslations("auth.register")
   const tCommon = useTranslations("common")
   const router = useRouter()
 
-  const [values, setValues] = useState<FormValues>({ firstName: "", lastName: "", email: "", password: "", confirmPassword: "", department: "", academicYear: "" })
+  const [values, setValues] = useState<FormValues>({ firstName: "", lastName: "", email: "", password: "", confirmPassword: "", department: "", academicYear: "", preferredDepartment: "" })
   const [errors, setErrors] = useState<Partial<FormValues>>({})
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [serverError, setServerError] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const yearNum = Number(values.academicYear)
+  const isLowerYear = yearNum === 1 || yearNum === 2
+  const isUpperYear = yearNum === 3 || yearNum === 4
 
   function field(key: keyof FormValues) {
     return {
@@ -42,13 +46,38 @@ export function RegisterForm() {
     }
   }
 
+  function setYear(next: string) {
+    const n = Number(next)
+    setValues((v) => {
+      const updated: FormValues = { ...v, academicYear: next }
+      if (n === 1 || n === 2) {
+        updated.department = "General"
+      } else if (n === 3 || n === 4) {
+        updated.preferredDepartment = ""
+        if (v.department === "General") updated.department = ""
+      }
+      return updated
+    })
+  }
+
   function validate() {
     const errs: Partial<FormValues> = {}
-    if (!values.firstName.trim()) errs.firstName = t("firstName") + " required"
-    if (!values.lastName.trim()) errs.lastName = t("lastName") + " required"
-    if (!values.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) errs.email = t("email") + " invalid"
-    if (values.password.length < 6) errs.password = tCommon("somethingWentWrong")
-    if (values.password !== values.confirmPassword) errs.confirmPassword = tCommon("somethingWentWrong")
+    if (!values.firstName.trim()) errs.firstName = t("firstName") + " " + t("required")
+    if (!values.lastName.trim()) errs.lastName = t("lastName") + " " + t("required")
+    if (!values.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) errs.email = t("emailInvalid")
+    if (values.password.length < 6) errs.password = t("passwordMin")
+    if (values.password !== values.confirmPassword) errs.confirmPassword = t("passwordsMismatch")
+    if (!values.academicYear || ![1, 2, 3, 4].includes(yearNum)) errs.academicYear = t("academicYear") + " " + t("required")
+    if (!values.department) {
+      errs.department = t("department") + " " + t("required")
+    } else if (isLowerYear && values.department !== "General") {
+      errs.department = t("lowerYearDeptHint")
+    } else if (isUpperYear && values.department === "General") {
+      errs.department = t("upperYearDeptHint")
+    }
+    if (isLowerYear && !values.preferredDepartment) {
+      errs.preferredDepartment = t("preferredDepartment") + " " + t("required")
+    }
     return errs
   }
 
@@ -66,8 +95,9 @@ export function RegisterForm() {
         email: values.email,
         password: values.password,
         username: values.email.split("@")[0],
-        ...(values.department && { department: values.department }),
-        ...(values.academicYear && { academicYear: Number(values.academicYear) }),
+        department: values.department,
+        academicYear: yearNum,
+        ...(isLowerYear && { preferredDepartment: values.preferredDepartment }),
       })
       router.push(`/verify-email?email=${encodeURIComponent(values.email)}`)
     } catch (err) {
@@ -94,6 +124,7 @@ export function RegisterForm() {
           <div className="space-y-1.5">
             <Label htmlFor="lastName">{t("lastName")}</Label>
             <Input id="lastName" placeholder={t("lastNamePlaceholder")} autoComplete="family-name" className="h-10" {...field("lastName")} />
+            {errors.lastName && <p className="text-xs text-destructive">{errors.lastName}</p>}
           </div>
         </motion.div>
 
@@ -126,28 +157,72 @@ export function RegisterForm() {
         </motion.div>
 
         <motion.div variants={fadeUp} custom={5} className="space-y-3 border-t border-border pt-4">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("optionalDetails")}</p>
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{t("academicDetails")}</p>
           <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="academicYear">{t("academicYear")}</Label>
+              <select
+                id="academicYear"
+                value={values.academicYear}
+                onChange={(e) => setYear(e.target.value)}
+                aria-invalid={!!errors.academicYear}
+                className="h-10 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:bg-input/30"
+              >
+                <option value="">{t("academicYearPlaceholder")}</option>
+                {[1, 2, 3, 4].map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
+              {errors.academicYear && <p className="text-xs text-destructive">{errors.academicYear}</p>}
+            </div>
             <div className="space-y-1.5">
               <Label htmlFor="department">{t("department")}</Label>
               <select
                 id="department"
                 value={values.department}
                 onChange={(e) => setValues((v) => ({ ...v, department: e.target.value }))}
+                disabled={isLowerYear}
                 aria-invalid={!!errors.department}
-                className="h-10 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:bg-input/30"
+                className="h-10 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-input/30"
               >
                 <option value="">{t("departmentPlaceholder")}</option>
-                {DEPARTMENTS.map((d) => (
+                {isLowerYear ? (
+                  <option value="General">General</option>
+                ) : (
+                  SPECIALIZATIONS.map((d) => (
+                    <option key={d} value={d}>{d}</option>
+                  ))
+                )}
+              </select>
+              {errors.department && <p className="text-xs text-destructive">{errors.department}</p>}
+              {isLowerYear && !errors.department && (
+                <p className="text-xs text-muted-foreground">{t("lowerYearDeptHint")}</p>
+              )}
+            </div>
+          </div>
+
+          {isLowerYear && (
+            <div className="space-y-1.5">
+              <Label htmlFor="preferredDepartment">{t("preferredDepartment")}</Label>
+              <select
+                id="preferredDepartment"
+                value={values.preferredDepartment}
+                onChange={(e) => setValues((v) => ({ ...v, preferredDepartment: e.target.value }))}
+                aria-invalid={!!errors.preferredDepartment}
+                className="h-10 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:bg-input/30"
+              >
+                <option value="">{t("preferredDepartmentPlaceholder")}</option>
+                {SPECIALIZATIONS.map((d) => (
                   <option key={d} value={d}>{d}</option>
                 ))}
               </select>
+              {errors.preferredDepartment ? (
+                <p className="text-xs text-destructive">{errors.preferredDepartment}</p>
+              ) : (
+                <p className="text-xs text-muted-foreground">{t("preferredDepartmentHint")}</p>
+              )}
             </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="academicYear">{t("academicYear")}</Label>
-              <Input id="academicYear" type="number" min={1} max={4} placeholder={t("academicYearPlaceholder")} className="h-10" {...field("academicYear")} />
-            </div>
-          </div>
+          )}
         </motion.div>
 
         {serverError && (
