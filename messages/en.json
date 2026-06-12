@@ -341,7 +341,10 @@
     "newPasswordDiff": "New password must differ from current",
     "passwordsMatch": "Passwords do not match",
     "failedDept": "Failed to update department.",
-    "failedPref": "Failed to update preference."
+    "failedPref": "Failed to update preference.",
+    "academicYearTitle": "Academic Year",
+    "academicYearLabel": "Current academic year",
+    "failedYear": "Failed to update academic year"
   },
   "admin": {
     "brand": "Helwan CS",

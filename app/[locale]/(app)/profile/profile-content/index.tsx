@@ -6,6 +6,7 @@ import { PageSkeleton } from "@/components/page-skeleton"
 import { ErrorState } from "@/components/error-state"
 import { ProfileHeader } from "./profile-header"
 import { DepartmentForm } from "./department-form"
+import { AcademicYearForm } from "./academic-year-form"
 import { PasswordForm } from "./password-form"
 
 export function ProfileContent() {
@@ -25,6 +26,7 @@ export function ProfileContent() {
 
       <ProfileHeader profile={profile} />
       <DepartmentForm profile={profile} />
+      <AcademicYearForm profile={profile} />
       <PasswordForm />
     </main>
   )

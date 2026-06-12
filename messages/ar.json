@@ -341,7 +341,10 @@
     "newPasswordDiff": "يجب أن تختلف كلمة المرور الجديدة عن الحالية",
     "passwordsMatch": "كلمتا المرور غير متطابقتين",
     "failedDept": "فشل تحديث القسم.",
-    "failedPref": "فشل تحديث التفضيل."
+    "failedPref": "فشل تحديث التفضيل.",
+    "academicYearTitle": "السنة الدراسية",
+    "academicYearLabel": "السنة الدراسية الحالية",
+    "failedYear": "تعذر تحديث السنة الدراسية"
   },
   "admin": {
     "brand": "حلوان CS",
