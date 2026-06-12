@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { GraduationCap, LogOut, User, BookOpen, TrendingUp, Brain, FileText, LayoutDashboard, Menu } from "lucide-react"
 import { Link, useRouter } from "@/i18n/navigation"
 import { useTranslations } from "next-intl"
@@ -28,11 +29,15 @@ import { LocaleSwitcher } from "./locale-switcher"
 export function Navbar() {
   const t = useTranslations("nav")
   const router = useRouter()
+  const queryClient = useQueryClient()
   const { user, isAuthenticated, clearAuth } = useAuthStore()
   const [mobileOpen, setMobileOpen] = useState(false)
 
   function handleSignOut() {
     clearAuth()
+    // Drop all cached queries (profile, courses, etc.) so the next user that
+    // signs in never sees the previous user's data.
+    queryClient.clear()
     router.push("/")
   }
 

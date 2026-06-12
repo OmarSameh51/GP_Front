@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { useSearchParams } from "next/navigation"
 import { useRouter, Link } from "@/i18n/navigation"
 import { motion } from "framer-motion"
@@ -22,6 +23,7 @@ export function LoginForm() {
   const t = useTranslations("auth.login")
   const tCommon = useTranslations("common")
   const router = useRouter()
+  const queryClient = useQueryClient()
   const searchParams = useSearchParams()
   const registered = searchParams.get("registered") === "true"
   const verified = searchParams.get("verified") === "true"
@@ -59,6 +61,9 @@ export function LoginForm() {
     setIsSubmitting(true)
     try {
       const { data } = await api.post("/auth/login", values)
+      // Clear any cached queries from a previous session so this user never
+      // inherits the previous user's profile/courses data.
+      queryClient.clear()
       setAuth(data.user, data.token)
       const role = data.user.role
       router.push(role === "admin" || role === "super_admin" ? "/dashboard/students" : "/")
