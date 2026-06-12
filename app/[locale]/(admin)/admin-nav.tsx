@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { GraduationCap, Users, BookOpen, Network, ShieldCheck, LogOut, Menu, X } from "lucide-react"
 import { Link, useRouter, usePathname } from "@/i18n/navigation"
 import { useTranslations } from "next-intl"
@@ -13,10 +14,14 @@ export function AdminNav() {
   const router = useRouter()
   const { clearAuth } = useAuthStore()
   const { data: profile } = useProfile()
+  const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
 
   function handleSignOut() {
     clearAuth()
+    // Drop all cached queries (profile, courses, etc.) so the next user that
+    // signs in never sees the previous user's data.
+    queryClient.clear()
     router.push("/")
   }
 
